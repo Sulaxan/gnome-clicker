@@ -1,4 +1,4 @@
-import type { GnomeClientBoundPayload } from './protocol';
+import type { ClientBoundPayload } from '$lib/protocol/server';
 
 export class GnomeInstance {
 	private gnomes: number = 0;
@@ -37,7 +37,7 @@ export class GnomeInstanceManager {
 
 // Represents an individual client-associated event processor on the server. Each processor is
 // responsible for dispatching events to a single client.
-export type EventProcessor = (payload: GnomeClientBoundPayload) => void;
+export type EventProcessor = (payload: ClientBoundPayload) => void;
 
 export class EventProcessorManager {
 	// instanceId => (processor id => event processor)
@@ -64,7 +64,7 @@ export class EventProcessorManager {
 		procs.delete(processorId);
 	}
 
-	public broadcast(instanceId: string, payload: GnomeClientBoundPayload) {
+	public broadcast(instanceId: string, payload: ClientBoundPayload) {
 		const procs = this.instanceProcessors(instanceId);
 		console.log('procs size = ' + procs.size);
 		procs.forEach((processor) => processor(payload));

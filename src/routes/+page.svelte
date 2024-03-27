@@ -1,12 +1,9 @@
 <script lang="ts">
 	import { fetchAccessToken, setupDiscordSdk } from '$lib';
-	import type {
-		ClientClickEvent,
-		GnomeClientBoundPayload,
-		GnomeServerBoundPayload,
-		UpdateGnomesEvent
-	} from '$lib/gnome/protocol';
-	import { gnomes, status } from '$lib/stores';
+	import { handle } from '$lib/client_event_handler';
+	import type { ClientClickEvent, ServerBoundPayload } from '$lib/protocol/client';
+	import type { ClientBoundPayload, UpdateGnomesEvent } from '$lib/protocol/server';
+	import { gnomes } from '$lib/stores';
 
 	let instanceId: string;
 	setupDiscordSdk().then((sdk) => {
@@ -26,17 +23,7 @@
 		sse.onmessage = (event) => {
 			console.log('Received event stream message...');
 			console.log(event.data);
-			const payload: GnomeClientBoundPayload = JSON.parse(event.data);
-
-			// FIXME: extract out in the future
-			switch (payload.eventId) {
-				case 'update-gnomes':
-					let update: UpdateGnomesEvent = JSON.parse(payload.payloadJson);
-					gnomes.set(update.gnomes);
-					break;
-				default:
-					break;
-			}
+			handle(event.data);
 		};
 
 		return () => sse.close();
@@ -44,9 +31,9 @@
 
 	async function sendClickEvent() {
 		const clickEvent: ClientClickEvent = {};
-		const payload: GnomeServerBoundPayload = {
+		const payload: ServerBoundPayload = {
 			instanceId: instanceId,
-			eventId: 'click',
+			eventType: 'click',
 			payloadJson: JSON.stringify(clickEvent)
 		};
 		fetch('/api/gnome', {
@@ -69,5 +56,4 @@
 	>
 		GNOME!
 	</button>
-	<p class="italic">Status: {$status}</p>
 </div>

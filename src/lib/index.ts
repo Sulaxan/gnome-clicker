@@ -1,10 +1,8 @@
 import { DiscordSDK } from '@discord/embedded-app-sdk';
-import { status } from './stores';
 
 export async function setupDiscordSdk(): Promise<DiscordSDK> {
 	const discordSdk = new DiscordSDK(import.meta.env.VITE_DISCORD_CLIENT_ID);
 	await discordSdk.ready();
-	status.set('SDK READY');
 
 	return discordSdk;
 }
