@@ -6,5 +6,5 @@
  * @returns The encoded form of the data.
  */
 export function encode(event: string | null, data: string): string {
-	return `event: ${event === null ? 'message' : event}\ndata: ${data}\n\n`;
+    return `event: ${event === null ? "message" : event}\ndata: ${data}\n\n`;
 }
