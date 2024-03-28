@@ -1,3 +1,4 @@
+import type { ServerBoundPayload } from "./protocol/client";
 import type { ClientBoundPayload, InitialStateEvent, UpdateGnomesEvent } from "./protocol/server";
 import { gnomes } from "./stores";
 
@@ -18,4 +19,14 @@ export function handle(payloadStr: string) {
         default:
             break;
     }
+}
+
+export function pushEvent(payload: ServerBoundPayload) {
+    fetch("/api/gnome", {
+        method: "POST",
+        body: JSON.stringify(payload),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
 }
