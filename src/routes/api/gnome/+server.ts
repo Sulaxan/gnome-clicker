@@ -1,6 +1,6 @@
 import { error } from "@sveltejs/kit";
 import type { RequestEvent } from "../token/$types";
-import { INSTANCE_MANAGER, nextEventProcessorId, PROCESSOR_MANAGER } from "$lib/gnome/gnome";
+import { INSTANCE_MANAGER, nextEventProcessorId, PROCESSOR_MANAGER } from "$lib/gnome";
 import { type ClientClickEvent, type ServerBoundPayload } from "$lib/protocol/client";
 import { type InitialStateEvent, type UpdateGnomesEvent } from "$lib/protocol/server";
 import { encode } from "$lib/util/sse";
@@ -30,6 +30,7 @@ export async function GET(event: RequestEvent) {
             PROCESSOR_MANAGER.removeProcessor(instanceId, processorId);
             // TODO: need to remove the instnace from INSTANCE_MANAGER if the number of processors
             // for the instanceId is 0
+
         },
     });
 

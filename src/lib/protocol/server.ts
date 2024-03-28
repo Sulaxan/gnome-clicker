@@ -7,7 +7,10 @@ export interface InitialStateEvent extends ServerEvent {
 export interface UpdateGnomesEvent extends ServerEvent {
     gnomes: number;
 }
-export type ClientBoundEventType = "initial-state" | "update-gnomes";
+
+export interface HeartBeatEvent extends ServerEvent {}
+
+export type ClientBoundEventType = "initial-state" | "heartbeat" | "update-gnomes";
 
 export interface ClientBoundPayload {
     eventType: ClientBoundEventType;

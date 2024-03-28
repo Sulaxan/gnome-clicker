@@ -2,13 +2,15 @@
     import { fetchAccessToken, setupDiscordSdk } from "$lib";
     import { handle, pushEvent } from "$lib/client_event_handler";
     import ActivityLog from "$lib/components/ActivityLog.svelte";
+    import { GnomeConnection, State } from "$lib/connection";
     import type { ClientClickEvent, ServerBoundPayload } from "$lib/protocol/client";
     import { DEBUG_MESSAGE, SUCCESS_COLOR, SYSTEM_MESSAGE, TextBuilder } from "$lib/protocol/text";
-    import { eventStream, gnomes, status } from "$lib/stores";
+    import { gnomes, instanceId, status } from "$lib/stores";
     import { debug, log } from "$lib/util/log";
-    import { onDestroy, onMount } from "svelte";
+    import { onDestroy } from "svelte";
 
-    let instanceId: string | undefined = undefined;
+    let gnomeConnection: GnomeConnection | undefined = undefined;
+
     setupDiscordSdk()
         .then((sdk) => {
             log(
@@ -17,8 +19,44 @@
                     .color(SUCCESS_COLOR)
                     .build()
             );
-            instanceId = sdk.instanceId;
-            subscribe(instanceId);
+            $instanceId = sdk.instanceId;
+
+            // setup gnome server connection
+            gnomeConnection = new GnomeConnection($instanceId, handle);
+            gnomeConnection.connect();
+            gnomeConnection.startMonitoring();
+            gnomeConnection.onStateChange = (state) => {
+                const report = (message: string) => {
+                    console.log(message);
+                    log(TextBuilder.from(SYSTEM_MESSAGE).text(message).build());
+                };
+
+                switch (state) {
+                    case State.NOT_CONNECTED: {
+                        break;
+                    }
+                    case State.CONNECTING: {
+                        report("Connecting to Gnome server...");
+                        $status = "CONNECTING";
+                        break;
+                    }
+                    case State.CONNECTED: {
+                        report("Successfully connected to Gnome server!");
+                        $status = "CONNECTED";
+                        break;
+                    }
+                    case State.DISCONNECTED: {
+                        report("Disconnected from Gnome server");
+                        $status = "DISCONNECTED";
+                        break;
+                    }
+                    case State.ERROR: {
+                        report("Gnome server connection error");
+                        $status = "ERROR";
+                        break;
+                    }
+                }
+            };
 
             fetchAccessToken(sdk);
         })
@@ -34,82 +72,21 @@
             );
         });
 
-    // FIXME: broken currently; always tries to reconnect even if the stream is already connected
-    // onMount(() => {
-    //     // checks if there's a connection to the server every few seconds; reconnects if there isn't
-    //     setInterval(() => {
-    //         // if the stream is undefined, then we still haven't gone through the initial connection
-    //         if ($eventStream === undefined) {
-    //             return;
-    //         }
-
-    //         // need to have a valid instance id
-    //         if (instanceId === undefined) {
-    //             return;
-    //         }
-
-    //         if ($eventStream.readyState === EventSource.CLOSED) {
-    //             console.log("Reconnecting to Gnome server...");
-    //             log(
-    //                 TextBuilder.from(SYSTEM_MESSAGE).text("Reconnecting to Gnome server...").build()
-    //             );
-    //             subscribe(instanceId);
-    //         }
-    //     }, 5000);
-    // });
     onDestroy(() => {
-        if ($eventStream !== undefined) {
-            $eventStream.close();
+        if (gnomeConnection !== undefined) {
+            gnomeConnection.stopMonitoring();
+            gnomeConnection.disconnect();
         }
     });
 
-    // subscribes to SSE (server sent events)
-    function subscribe(instanceId: string) {
-        const sse = new EventSource(`/api/gnome?instance=${instanceId}`);
-        $eventStream = sse;
-
-        sse.onopen = () => {
-            console.log("Established event stream connection with server");
-            $status = "Connected";
-            log(
-                TextBuilder.from(SYSTEM_MESSAGE)
-                    .text("Successfully connected to Gnome server.")
-                    .color(SUCCESS_COLOR)
-                    .build()
-            );
-        };
-        sse.onmessage = (event) => {
-            console.log("Received event stream message...");
-            console.log(event.data);
-            handle(event.data);
-        };
-        sse.onerror = () => {
-            // try to reconnect in a few seconds
-            console.log("Error occurred, reconnecting in a few seconds...");
-            $status = "Disconnected from server, waiting to reconnect...";
-            log(
-                TextBuilder.from(SYSTEM_MESSAGE)
-                    .text("Disconnected from the Gnome server, reconnecting in a few seconds...")
-                    .build()
-            );
-
-            setTimeout(() => {
-                log(
-                    TextBuilder.from(SYSTEM_MESSAGE).text("Reconnecting to Gnome server...").build()
-                );
-                subscribe(instanceId);
-            }, 5 * 1000);
-        };
-    }
-
     async function sendGnomeClickEvent() {
-        if (instanceId === undefined) {
+        if ($instanceId === undefined) {
             return;
         }
 
         const clickEvent: ClientClickEvent = {};
         const payload: ServerBoundPayload = {
-            instanceId: instanceId,
+            instanceId: $instanceId,
             eventType: "click",
             payloadJson: JSON.stringify(clickEvent),
         };

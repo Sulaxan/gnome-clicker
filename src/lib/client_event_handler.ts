@@ -1,14 +1,20 @@
 import type { ServerBoundPayload } from "./protocol/client";
 import type { ClientBoundPayload, InitialStateEvent, UpdateGnomesEvent } from "./protocol/server";
-import { gnomes } from "./stores";
+import { DEBUG_MESSAGE, TextBuilder } from "./protocol/text";
+import { gnomes, lastHeartbeatTime } from "./stores";
+import { debug } from "./util/log";
 
-export function handle(payloadStr: string) {
-    const payload: ClientBoundPayload = JSON.parse(payloadStr);
-
+export function handle(payload: ClientBoundPayload) {
     switch (payload.eventType) {
         case "initial-state": {
             const event: InitialStateEvent = JSON.parse(payload.payloadJson);
             gnomes.set(event.gnomes);
+            break;
+        }
+        case "heartbeat": {
+            console.log("Received Gnome server heartbeat");
+            debug(TextBuilder.from(DEBUG_MESSAGE).text("Received heartbeat").build());
+            lastHeartbeatTime.set(Date.now());
             break;
         }
         case "update-gnomes": {
