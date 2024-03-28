@@ -3,14 +3,21 @@
     import { handle, pushEvent } from "$lib/client_event_handler";
     import ActivityLog from "$lib/components/ActivityLog.svelte";
     import type { ClientClickEvent, ServerBoundPayload } from "$lib/protocol/client";
+    import { DEBUG_MESSAGE, SUCCESS_COLOR, SYSTEM_MESSAGE, TextBuilder } from "$lib/protocol/text";
     import { eventStream, gnomes, status } from "$lib/stores";
-    import { onDestroy } from "svelte";
+    import { debug, log } from "$lib/util/log";
+    import { onDestroy, onMount } from "svelte";
 
-    let instanceId: string;
+    let instanceId: string | undefined = undefined;
     setupDiscordSdk()
         .then((sdk) => {
+            log(
+                TextBuilder.from(SYSTEM_MESSAGE)
+                    .text("Successfully connected to Discord client!")
+                    .color(SUCCESS_COLOR)
+                    .build()
+            );
             instanceId = sdk.instanceId;
-            //TODO: close the sse connection when component is disposed
             subscribe(instanceId);
 
             fetchAccessToken(sdk);
@@ -18,8 +25,38 @@
         .catch((reason) => {
             console.log("Could not connect to Discord");
             $status = "Disconnected from Discord";
+            log(
+                TextBuilder.from(SYSTEM_MESSAGE)
+                    .text(
+                        "Could not connect to Discord. This probably means you're running this in the browser. Check the console for more details."
+                    )
+                    .build()
+            );
         });
 
+    // FIXME: broken currently; always tries to reconnect even if the stream is already connected
+    // onMount(() => {
+    //     // checks if there's a connection to the server every few seconds; reconnects if there isn't
+    //     setInterval(() => {
+    //         // if the stream is undefined, then we still haven't gone through the initial connection
+    //         if ($eventStream === undefined) {
+    //             return;
+    //         }
+
+    //         // need to have a valid instance id
+    //         if (instanceId === undefined) {
+    //             return;
+    //         }
+
+    //         if ($eventStream.readyState === EventSource.CLOSED) {
+    //             console.log("Reconnecting to Gnome server...");
+    //             log(
+    //                 TextBuilder.from(SYSTEM_MESSAGE).text("Reconnecting to Gnome server...").build()
+    //             );
+    //             subscribe(instanceId);
+    //         }
+    //     }, 5000);
+    // });
     onDestroy(() => {
         if ($eventStream !== undefined) {
             $eventStream.close();
@@ -29,10 +66,17 @@
     // subscribes to SSE (server sent events)
     function subscribe(instanceId: string) {
         const sse = new EventSource(`/api/gnome?instance=${instanceId}`);
-        eventStream.set(sse);
+        $eventStream = sse;
+
         sse.onopen = () => {
             console.log("Established event stream connection with server");
             $status = "Connected";
+            log(
+                TextBuilder.from(SYSTEM_MESSAGE)
+                    .text("Successfully connected to Gnome server.")
+                    .color(SUCCESS_COLOR)
+                    .build()
+            );
         };
         sse.onmessage = (event) => {
             console.log("Received event stream message...");
@@ -43,13 +87,26 @@
             // try to reconnect in a few seconds
             console.log("Error occurred, reconnecting in a few seconds...");
             $status = "Disconnected from server, waiting to reconnect...";
+            log(
+                TextBuilder.from(SYSTEM_MESSAGE)
+                    .text("Disconnected from the Gnome server, reconnecting in a few seconds...")
+                    .build()
+            );
+
             setTimeout(() => {
+                log(
+                    TextBuilder.from(SYSTEM_MESSAGE).text("Reconnecting to Gnome server...").build()
+                );
                 subscribe(instanceId);
             }, 5 * 1000);
         };
     }
 
     async function sendGnomeClickEvent() {
+        if (instanceId === undefined) {
+            return;
+        }
+
         const clickEvent: ClientClickEvent = {};
         const payload: ServerBoundPayload = {
             instanceId: instanceId,
@@ -61,6 +118,7 @@
         gnomes.update((val) => val + 1);
 
         pushEvent(payload);
+        debug(TextBuilder.from(DEBUG_MESSAGE).text("Pushed click event").build());
     }
 </script>
 
@@ -70,17 +128,18 @@
 
     <button
         on:click={sendGnomeClickEvent}
-        class="text-6xl bg-indigo-500 px-5 py-3 rounded-lg hover:bg-indigo-600"
+        class="text-6xl bg-indigo-500 w-64 h-64 rounded-[200px] border-solid border-2 border-b-[6px]
+        border-r-[6px] border-black hover:bg-indigo-600"
     >
         GNOME!
     </button>
 
     <div class="w-full absolute bottom-0">
         <!-- activity log -->
-        <ActivityLog className="ml-auto mb-3 w-1/2 max-h-56" />
+        <ActivityLog className="ml-auto mb-3 w-2/5 max-h-56" />
 
         <!-- status -->
-        <div class="flex gap-x-2 bg-blue-700 w-fit p-3 text-left italic">
+        <div class="flex gap-x-2 w-fit p-3 text-left italic">
             Status:
             <div class="text-yellow-500">
                 {$status}

@@ -1,5 +1,5 @@
 import { writable, type Writable } from "svelte/store";
-import { TextBuilder, type TextComponent } from "./protocol/text";
+import { type TextComponent } from "./protocol/text";
 
 // used by the client
 export const status: Writable<string> = writable("None");

@@ -6,17 +6,21 @@
 </script>
 
 <div class="flex {className}">
-    {#each components as component}
-        {#if component.type === "space"}
-            <div>&nbsp;</div>
-        {:else if component.type === "default"}
-            <div
-                style="color: {component.color !== undefined ? component.color : DEFAULT_COLOR};"
-                class:font-bold={component.bold}
-                class:italic={component.italic}
-            >
-                {component.content}
-            </div>
-        {/if}
-    {/each}
+    <p>
+        {#each components as component}
+            {#if component.type === "space"}
+                <span>&nbsp;</span>
+            {:else if component.type === "default"}
+                <span
+                    style="color: {component.color !== undefined
+                        ? component.color
+                        : DEFAULT_COLOR};"
+                    class:font-bold={component.bold}
+                    class:italic={component.italic}
+                >
+                    {component.content}
+                </span>
+            {/if}
+        {/each}
+    </p>
 </div>

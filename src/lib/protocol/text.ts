@@ -1,8 +1,3 @@
-export const DEFAULT_COLOR = "#e2e8f0";
-export const SPACE: TextComponent = {
-    type: "default",
-};
-
 export interface TextComponent {
     // the type of the text component
     type: "default" | "space";
@@ -96,11 +91,41 @@ export class TextBuilder {
         return this.components;
     }
 
+    /**
+     * Creates a new TextBuilder.
+     *
+     * @returns A new TextBuilder.
+     */
     public static new() {
         return new TextBuilder();
     }
 
+    /**
+     * Creates a new TextBuilder from the given components. The components are copied before passing
+     * it to the new TextBuilder.
+     *
+     * @param components The components to build from.
+     * @returns A new TextBuilder.
+     */
     public static from(components: TextComponent[]) {
-        return new TextBuilder(components);
+        return new TextBuilder([...components]);
     }
 }
+
+// tailwind: slate-200
+export const DEFAULT_COLOR = "#e2e8f0";
+// tailwind: lime-600
+export const SUCCESS_COLOR = "#65a30d";
+// tailwind: red-600
+export const ERROR_COLOR = "#dc2626";
+
+export const SYSTEM_MESSAGE: TextComponent[] = TextBuilder.new()
+    .text("[SYSTEM]")
+    .color(ERROR_COLOR)
+    .bold()
+    .build();
+export const DEBUG_MESSAGE: TextComponent[] = TextBuilder.new()
+    .text("[DEBUG]")
+    .color("#7f1d1d")
+    .bold()
+    .build();

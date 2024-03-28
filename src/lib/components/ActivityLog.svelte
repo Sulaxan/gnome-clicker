@@ -12,9 +12,7 @@
     <div class="w-full h-1 bg-slate-200" />
     <div class="overflow-y-auto">
         {#each $activityLog as log}
-            <div class="text-lg mx-3 my-1">
-                <Text components={log}/>
-            </div>
+            <Text components={log} className="text-lg mx-3 my-1" />
         {/each}
     </div>
 </div>
