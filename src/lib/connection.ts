@@ -12,14 +12,16 @@ export type EventHandler = (payload: ClientBoundPayload) => void;
 
 export class GnomeConnection {
     private instanceId: string;
+    private clientId: string;
     private connection: EventSource | undefined = undefined;
     private connectionState: State = State.NOT_CONNECTED;
     private eventHandler: EventHandler | undefined;
     private monitorIntervalId: number | undefined = undefined;
     public onStateChange: ((state: State) => void) | undefined = undefined;
 
-    constructor(instanceId: string, eventHandler: EventHandler | undefined) {
+    constructor(instanceId: string, clientId: string, eventHandler: EventHandler | undefined) {
         this.instanceId = instanceId;
+        this.clientId = clientId;
         this.eventHandler = eventHandler;
     }
 
@@ -45,7 +47,9 @@ export class GnomeConnection {
         }
 
         this.setState(State.CONNECTING);
-        const sse = new EventSource(`/api/gnome?instance=${this.instanceId}`);
+        const sse = new EventSource(
+            `/api/gnome?instance=${this.instanceId}&clientId=${this.clientId}`
+        );
         this.connection = sse;
 
         sse.onopen = () => {

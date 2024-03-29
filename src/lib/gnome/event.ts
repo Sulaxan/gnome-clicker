@@ -1,43 +1,72 @@
-// Represents an individual client-associated event processor on the server. Each processor is
-
 import type { ClientBoundPayload } from "$lib/protocol/server";
 
-// responsible for dispatching events to a single client.
-export type EventProcessor = (payload: ClientBoundPayload) => void;
+/**
+ * Responsible for dispatching events to a single client.
+ */
+export type EventListener = (payload: ClientBoundPayload) => void;
 
-export class EventProcessorManager {
-    // instanceId => (processor id => event processor)
-    private processors: Map<string, Map<string, EventProcessor>> = new Map();
+export class EventManager {
+    // instanceId => (listener id => event listener)
+    private listeners: Map<string, Map<string, EventListener>> = new Map();
 
-    // get all processors for an instance id
-    public instanceProcessors(instanceId: string): Map<string, EventProcessor> {
-        let procs = this.processors.get(instanceId);
+    /**
+     * Get all listeners for an instance id.
+     *
+     * @param instanceId The instance id to get listeners for.
+     * @returns All listeners for an instance.
+     */
+    public instanceListeners(instanceId: string): Map<string, EventListener> {
+        let procs = this.listeners.get(instanceId);
         if (procs === undefined) {
             procs = new Map();
-            this.processors.set(instanceId, procs);
+            this.listeners.set(instanceId, procs);
         }
 
         return procs;
     }
 
-    public addProcessor(instanceId: string, processorId: string, processor: EventProcessor) {
-        const procs = this.instanceProcessors(instanceId);
-        procs.set(processorId, processor);
+    /**
+     * Add a new listener for an instance.
+     *
+     * @param instanceId The instance to add the listener to.
+     * @param listenerId The unique id of the listener.
+     * @param listener The listener function.
+     */
+    public addListener(instanceId: string, listenerId: string, listener: EventListener) {
+        const procs = this.instanceListeners(instanceId);
+        procs.set(listenerId, listener);
     }
 
-    public removeProcessor(instanceId: string, processorId: string) {
-        const procs = this.instanceProcessors(instanceId);
-        procs.delete(processorId);
+    /**
+     * Remove a listener for an instance.
+     *
+     * @param instanceId The instance to remove the listener from.
+     * @param listenerId The unique id of the listener to remove.
+     */
+    public removeListener(instanceId: string, listenerId: string) {
+        const procs = this.instanceListeners(instanceId);
+        procs.delete(listenerId);
     }
 
+    /**
+     * Broadcast a payload to all listeners of an instance.
+     *
+     * @param instanceId The instance id to broadcast to.
+     * @param payload The payload to broadcast.
+     */
     public broadcast(instanceId: string, payload: ClientBoundPayload) {
-        const procs = this.instanceProcessors(instanceId);
+        const procs = this.instanceListeners(instanceId);
         console.log("procs size = " + procs.size);
         procs.forEach((processor) => processor(payload));
     }
 }
 
-export function nextEventProcessorId() {
+/**
+ * Generates a new unique listener id.
+ *
+ * @returns A unique listener id.
+ */
+export function nextEventListenerId(): string {
     // surely no duplicates...
     return Date.now().toPrecision(21).toString();
 }

@@ -21,8 +21,12 @@
             );
             $instanceId = sdk.instanceId;
 
+            if (sdk.clientId === null) {
+                return;
+            }
+
             // setup gnome server connection
-            gnomeConnection = new GnomeConnection($instanceId, handle);
+            gnomeConnection = new GnomeConnection($instanceId, sdk.clientId, handle);
             gnomeConnection.connect();
             gnomeConnection.startMonitoring();
             gnomeConnection.onStateChange = (state) => {

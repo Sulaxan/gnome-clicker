@@ -1,6 +1,6 @@
 # gnome-clicker
 
-Gnome Clicker (like Cookie Clicker) Discord Actvitiy
+Gnome Clicker (like Cookie Clicker) Discord Activity
 
 ## Developing
 

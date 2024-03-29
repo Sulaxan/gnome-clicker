@@ -1,6 +1,6 @@
 import { error } from "@sveltejs/kit";
 import type { RequestEvent } from "../token/$types";
-import { INSTANCE_MANAGER, nextEventProcessorId, PROCESSOR_MANAGER } from "$lib/gnome";
+import { INSTANCE_MANAGER, User } from "$lib/gnome";
 import { type ClientClickEvent, type ServerBoundPayload } from "$lib/protocol/client";
 import { type InitialStateEvent, type UpdateGnomesEvent } from "$lib/protocol/server";
 import { encode } from "$lib/util/sse";
@@ -8,29 +8,33 @@ import { encode } from "$lib/util/sse";
 export async function GET(event: RequestEvent) {
     const instanceId = event.url.searchParams.get("instance");
     if (instanceId === null) {
-        error(400, "No instance provided");
+        error(400, "No instance id provided");
     }
 
-    const processorId = nextEventProcessorId();
+    const clientId = event.url.searchParams.get("clientId");
+    if (clientId === null) {
+        error(400, "No discord id provided");
+    }
 
-    // TODO: should send a heartbeat every 5 seconds or so such that the stream doesn't timeout
     const stream = new ReadableStream({
         start(controller) {
             // send initial state
             const initialState = getInitialState(instanceId);
             controller.enqueue(encode(null, JSON.stringify(initialState)));
 
-            PROCESSOR_MANAGER.addProcessor(instanceId, processorId, (payload) => {
-                console.log("Enqueueing...");
+            const user = new User(clientId);
+            user.payloadHandler = (payload) => {
+                console.log(
+                    `Enqueueing payload for user ${clientId} in instance ${instanceId}...`
+                );
                 controller.enqueue(encode(null, JSON.stringify(payload)));
-            });
+            };
+
+            INSTANCE_MANAGER.addUser(instanceId, user);
         },
         cancel() {
-            console.log("Removing instance: " + instanceId);
-            PROCESSOR_MANAGER.removeProcessor(instanceId, processorId);
-            // TODO: need to remove the instnace from INSTANCE_MANAGER if the number of processors
-            // for the instanceId is 0
-
+            console.log(`Removing user ${clientId} for instance ${instanceId}`);
+            INSTANCE_MANAGER.removeUser(instanceId, clientId);
         },
     });
 
@@ -75,7 +79,7 @@ function handleClick(instanceId: string, _event: ClientClickEvent) {
     const updateEvent: UpdateGnomesEvent = {
         gnomes: instance.getGnomes(),
     };
-    PROCESSOR_MANAGER.broadcast(instanceId, {
+    instance.broadcast({
         eventType: "update-gnomes",
         payloadJson: JSON.stringify(updateEvent),
     });
