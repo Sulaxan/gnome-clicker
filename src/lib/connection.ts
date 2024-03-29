@@ -25,7 +25,7 @@ export class GnomeConnection {
         this.eventHandler = eventHandler;
     }
 
-    private getState() {
+    public getState() {
         return this.connectionState;
     }
 

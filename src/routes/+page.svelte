@@ -9,7 +9,7 @@
     import { debug, log } from "$lib/util/log";
     import { onDestroy } from "svelte";
 
-    let gnomeConnection: GnomeConnection | undefined = undefined;
+    let gnomeConnection: GnomeConnection | null = null;
 
     setupDiscordSdk()
         .then((sdk) => {
@@ -77,7 +77,7 @@
         });
 
     onDestroy(() => {
-        if (gnomeConnection !== undefined) {
+        if (gnomeConnection !== null) {
             gnomeConnection.stopMonitoring();
             gnomeConnection.disconnect();
         }
@@ -117,7 +117,7 @@
 
     <div class="w-full absolute bottom-0">
         <!-- activity log -->
-        <ActivityLog className="ml-auto mb-3 w-2/5 max-h-56" />
+        <ActivityLog connection={gnomeConnection} className="ml-auto mb-3 w-2/5 max-h-56" />
 
         <!-- status -->
         <div class="flex gap-x-2 w-fit p-3 text-left italic">
