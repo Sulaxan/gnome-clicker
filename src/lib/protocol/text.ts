@@ -87,7 +87,7 @@ export class TextBuilder {
      *
      * @returns The built component.
      */
-    public build() {
+    public build(): TextComponent[] {
         return this.components;
     }
 
@@ -96,8 +96,18 @@ export class TextBuilder {
      *
      * @returns A new TextBuilder.
      */
-    public static new() {
+    public static new(): TextBuilder {
         return new TextBuilder();
+    }
+
+    /**
+     * Creates a new TextBuilder from a given string.
+     *
+     * @param text The text to construct the TextBuilder with.
+     * @returns A new TextBuilder with the given string.
+     */
+    public static of(text: string): TextBuilder {
+        return new TextBuilder().text(text);
     }
 
     /**
@@ -105,9 +115,9 @@ export class TextBuilder {
      * it to the new TextBuilder.
      *
      * @param components The components to build from.
-     * @returns A new TextBuilder.
+     * @returns A new TextBuilder with the given components.
      */
-    public static from(components: TextComponent[]) {
+    public static from(components: TextComponent[]): TextBuilder {
         return new TextBuilder([...components]);
     }
 }

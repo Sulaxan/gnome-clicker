@@ -1,14 +1,24 @@
+import type { TextComponent } from "$lib/protocol/text";
 import type { GnomeInstance } from "../instance";
+
+export interface CanPurchaseResult {
+    purchaseable: boolean;
+    message?: string;
+}
 
 export interface Perk {
     /**
      * Optional unique name, otherwise it is inherited from the perk group.
      */
-    name?: string;
+    name?: TextComponent[];
     /**
      * Optional description to this perk group's description.
      */
-    description?: string;
+    description?: TextComponent[];
+    /**
+     * Optional description describing the cost of this perk.
+     */
+    costMessage?: TextComponent[];
     /**
      * Optional unique image url, otherwise it is inherited from the perk group.
      */
@@ -18,9 +28,9 @@ export interface Perk {
      * A function indicating whether this perk can be purchased.
      *
      * @param instance The Gnome instance.
-     * @returns true if the perk can be purchased, false otherwise, and with an optional message.
+     * @returns A result containing whether the perk can be purchased.
      */
-    canPurchase: (instance: GnomeInstance) => { purchaseable: boolean; message?: string };
+    canPurchase: (instance: GnomeInstance) => CanPurchaseResult;
 
     /**
      * A function called to purchase a perk.
@@ -45,10 +55,8 @@ export interface Perk {
  */
 export interface PerkGroup {
     id: string;
-    name: string;
-    description: string;
+    name: TextComponent[];
+    description: TextComponent[];
     imageUrl?: string;
     perks: Perk[];
 }
-
-export const PERKS: PerkGroup[] = [];

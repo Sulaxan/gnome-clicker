@@ -1,11 +1,13 @@
 import type { Perk } from ".";
 import type { PerkGroup } from ".";
 import { AUTO_GEN_PERK_GROUP } from "./autogen_perk";
+import { BIG_GNOME_PERK_GROUP } from "./big_gnome_perk";
 
 export * from "./perk";
 export * from "./autogen_perk";
+export * from "./big_gnome_perk";
 
-export const PERK_GROUPS: PerkGroup[] = [AUTO_GEN_PERK_GROUP];
+export const PERK_GROUPS: PerkGroup[] = [AUTO_GEN_PERK_GROUP, BIG_GNOME_PERK_GROUP];
 
 /**
  * Gets a perk group by its id.

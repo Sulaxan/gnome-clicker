@@ -3,18 +3,17 @@
 
     export let components: TextComponent[];
     export let className: string = "";
+    export let defaultColor: string = DEFAULT_COLOR;
 </script>
 
-<div class="flex {className}">
-    <p>
+<div class={className}>
+    <div>
         {#each components as component}
             {#if component.type === "space"}
                 <span>&nbsp;</span>
             {:else if component.type === "default"}
                 <span
-                    style="color: {component.color !== undefined
-                        ? component.color
-                        : DEFAULT_COLOR};"
+                    style="color: {component.color !== undefined ? component.color : defaultColor};"
                     class:font-bold={component.bold}
                     class:italic={component.italic}
                 >
@@ -22,5 +21,5 @@
                 </span>
             {/if}
         {/each}
-    </p>
+    </div>
 </div>

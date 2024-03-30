@@ -3,26 +3,27 @@ import type { Perk, PerkGroup } from ".";
 import { removeGnomes } from "../helper";
 import { checkRequiredGnomes, gnomeCostMessage } from "./helper";
 
-export interface AutoGenPerk extends Perk {
+export interface BigGnomePerk extends Perk {
     /**
-     * A value indicating how many Gnomes the perk generates.
+     * Value indicating how many gnomes the user gets per click.
      */
-    autoGenIncrement: number;
+    gnomesPerClick: number;
 }
 
 const TIER_1_COST = 1000;
-const TIER_2_COST = 2500;
-const TIER_3_COST = 5000;
+const TIER_2_COST = 5000;
+const TIER_3_COST = 10000;
+const TIER_4_COST = 15000;
 
-export const AUTO_GEN_PERK_GROUP: PerkGroup = {
-    id: "autogen",
-    name: TextBuilder.of("Auto Gnome Generation").build(),
-    description: TextBuilder.of("Automatically generate Gnomes every second.").build(),
+export const BIG_GNOME_PERK_GROUP: PerkGroup = {
+    id: "big-gnome",
+    name: TextBuilder.of("Big Gnome").build(),
+    description: TextBuilder.of("Get more Gnomes per click").build(),
     perks: [
         {
-            description: TextBuilder.of("Gnomes/sec: 1").build(),
+            description: TextBuilder.of("Gnomes/click: 2").build(),
+            gnomesPerClick: 2,
             costMessage: gnomeCostMessage(TIER_1_COST),
-            autoGenIncrement: 1,
             canPurchase(instance) {
                 return checkRequiredGnomes(instance, TIER_1_COST);
             },
@@ -31,9 +32,9 @@ export const AUTO_GEN_PERK_GROUP: PerkGroup = {
             },
         },
         {
-            description: TextBuilder.of("Gnomes/sec: 3").build(),
+            description: TextBuilder.of("Gnomes/click: 3").build(),
+            gnomesPerClick: 3,
             costMessage: gnomeCostMessage(TIER_2_COST),
-            autoGenIncrement: 3,
             canPurchase(instance) {
                 return checkRequiredGnomes(instance, TIER_2_COST);
             },
@@ -42,9 +43,9 @@ export const AUTO_GEN_PERK_GROUP: PerkGroup = {
             },
         },
         {
-            description: TextBuilder.of("Gnomes/sec: 5").build(),
+            description: TextBuilder.of("Gnomes/click: 4").build(),
+            gnomesPerClick: 4,
             costMessage: gnomeCostMessage(TIER_3_COST),
-            autoGenIncrement: 5,
             canPurchase(instance) {
                 return checkRequiredGnomes(instance, TIER_3_COST);
             },
@@ -52,5 +53,16 @@ export const AUTO_GEN_PERK_GROUP: PerkGroup = {
                 removeGnomes(instance, TIER_3_COST);
             },
         },
-    ] as AutoGenPerk[],
+        {
+            description: TextBuilder.of("Gnomes/click: 5").build(),
+            gnomesPerClick: 5,
+            costMessage: gnomeCostMessage(TIER_4_COST),
+            canPurchase(instance) {
+                return checkRequiredGnomes(instance, TIER_4_COST);
+            },
+            purchase(instance) {
+                removeGnomes(instance, TIER_4_COST);
+            },
+        },
+    ] as BigGnomePerk[],
 };
