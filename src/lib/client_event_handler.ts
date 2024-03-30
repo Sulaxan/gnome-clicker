@@ -1,8 +1,14 @@
 import type { ServerBoundPayload } from "./protocol/client";
-import type { ClientBoundPayload, InitialStateEvent, UpdateGnomesEvent } from "./protocol/server";
+import type {
+    ClientBoundPayload,
+    InitialStateEvent,
+    SendMessageEvent,
+    UpdateGnomesEvent,
+    UpdatePerksEvent,
+} from "./protocol/server";
 import { DEBUG_MESSAGE, TextBuilder } from "./protocol/text";
-import { gnomes, lastHeartbeatTime } from "./stores";
-import { debug } from "./util/log";
+import { gnomes, lastHeartbeatTime, perks } from "./stores";
+import { debug, log } from "./util/log";
 
 export function handle(payload: ClientBoundPayload) {
     switch (payload.eventType) {
@@ -20,6 +26,16 @@ export function handle(payload: ClientBoundPayload) {
         case "update-gnomes": {
             const event: UpdateGnomesEvent = JSON.parse(payload.payloadJson);
             gnomes.set(event.gnomes);
+            break;
+        }
+        case "update-perks": {
+            const event: UpdatePerksEvent = JSON.parse(payload.payloadJson);
+            perks.set(event.perks);
+            break;
+        }
+        case "send-message": {
+            const event: SendMessageEvent = JSON.parse(payload.payloadJson);
+            log(event.message);
             break;
         }
         default:

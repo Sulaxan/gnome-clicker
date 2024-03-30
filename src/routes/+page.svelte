@@ -5,7 +5,7 @@
     import { GnomeConnection, State } from "$lib/connection";
     import type { ClientClickEvent, ServerBoundPayload } from "$lib/protocol/client";
     import { DEBUG_MESSAGE, SUCCESS_COLOR, SYSTEM_MESSAGE, TextBuilder } from "$lib/protocol/text";
-    import { gnomes, instanceId, status } from "$lib/stores";
+    import { gnomes, instanceId, connectionState, clientId } from "$lib/stores";
     import { debug, log } from "$lib/util/log";
     import { onDestroy } from "svelte";
 
@@ -24,9 +24,10 @@
             if (sdk.clientId === null) {
                 return;
             }
+            $clientId = sdk.clientId;
 
             // setup gnome server connection
-            gnomeConnection = new GnomeConnection($instanceId, sdk.clientId, handle);
+            gnomeConnection = new GnomeConnection($instanceId, $clientId, handle);
             gnomeConnection.connect();
             gnomeConnection.startMonitoring();
             gnomeConnection.onStateChange = (state) => {
@@ -35,28 +36,26 @@
                     log(TextBuilder.from(SYSTEM_MESSAGE).text(message).build());
                 };
 
+                $connectionState = state;
+
                 switch (state) {
                     case State.NOT_CONNECTED: {
                         break;
                     }
                     case State.CONNECTING: {
                         report("Connecting to Gnome server...");
-                        $status = "CONNECTING";
                         break;
                     }
                     case State.CONNECTED: {
                         report("Successfully connected to Gnome server!");
-                        $status = "CONNECTED";
                         break;
                     }
                     case State.DISCONNECTED: {
                         report("Disconnected from Gnome server");
-                        $status = "DISCONNECTED";
                         break;
                     }
                     case State.ERROR: {
                         report("Gnome server connection error");
-                        $status = "ERROR";
                         break;
                     }
                 }
@@ -66,7 +65,7 @@
         })
         .catch((reason) => {
             console.log("Could not connect to Discord");
-            $status = "Disconnected from Discord";
+            $connectionState = State.ERROR;
             log(
                 TextBuilder.from(SYSTEM_MESSAGE)
                     .text(
@@ -84,13 +83,14 @@
     });
 
     async function sendGnomeClickEvent() {
-        if ($instanceId === undefined) {
+        if ($instanceId === undefined || $clientId === undefined) {
             return;
         }
 
         const clickEvent: ClientClickEvent = {};
         const payload: ServerBoundPayload = {
             instanceId: $instanceId,
+            clientId: $clientId,
             eventType: "click",
             payloadJson: JSON.stringify(clickEvent),
         };
@@ -117,14 +117,6 @@
 
     <div class="w-full absolute bottom-0">
         <!-- activity log -->
-        <ActivityLog connection={gnomeConnection} className="ml-auto mb-3 w-2/5 max-h-56" />
-
-        <!-- status -->
-        <div class="flex gap-x-2 w-fit p-3 text-left italic">
-            Status:
-            <div class="text-yellow-500">
-                {$status}
-            </div>
-        </div>
+        <ActivityLog className="ml-auto mb-3 w-2/5 max-h-56" />
     </div>
 </div>

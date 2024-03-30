@@ -129,3 +129,8 @@ export const DEBUG_MESSAGE: TextComponent[] = TextBuilder.new()
     .color("#7f1d1d")
     .bold()
     .build();
+export const PERK_MESSAGE: TextComponent[] = TextBuilder.new()
+    .text("[PERK]")
+    .color(SUCCESS_COLOR)
+    .bold()
+    .build();

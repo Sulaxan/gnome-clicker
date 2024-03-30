@@ -1,12 +1,15 @@
 import type { ClientBoundPayload, HeartBeatEvent } from "$lib/protocol/server";
+import type { PerkGroup } from "./perk";
 import type { User } from "./user";
 
-class GnomeInstance {
+export class GnomeInstance {
     private instanceId: string;
     private users: User[] = [];
     private loopIntervalId: number | undefined = undefined;
 
     private gnomes: number = 0;
+    // perk group id => zero-based tier
+    private perks: Map<string, number> = new Map();
 
     constructor(instanceId: string) {
         this.instanceId = instanceId;
@@ -29,8 +32,12 @@ class GnomeInstance {
         this.users.splice(index, 1);
     }
 
-    public getGnomes() {
+    public getGnomes(): number {
         return this.gnomes;
+    }
+
+    public setGnomes(gnomes: number) {
+        this.gnomes = gnomes;
     }
 
     /**
@@ -38,6 +45,29 @@ class GnomeInstance {
      */
     public incrementGnomes() {
         this.gnomes += 1;
+    }
+
+    public getPerks(): Map<string, number> {
+        return this.perks;
+    }
+
+    /**
+     * Adds a perk or sets its new tier.
+     *
+     * @param group The perk group.
+     * @param tier The zero-based tier.
+     */
+    public addPerk(group: PerkGroup, tier: number) {
+        this.perks.set(group.id, tier);
+    }
+
+    /**
+     * Removes a perk.
+     *
+     * @param group The perk group.
+     */
+    public removePerk(group: PerkGroup) {
+        this.perks.delete(group.id);
     }
 
     public runGameLoop() {
@@ -99,6 +129,7 @@ export class GnomeInstanceManager {
         if (instance !== undefined) {
             instance.stopGameLoop();
             this.instances.delete(instanceId);
+            console.log(`Deleted instance ${instanceId}`);
         }
     }
 

@@ -1,25 +1,27 @@
 <script lang="ts">
-    import { State, type GnomeConnection } from "$lib/connection";
-    import { activityLog } from "$lib/stores";
+    import { State } from "$lib/connection";
+    import { activityLog, connectionState } from "$lib/stores";
     import Text from "./Text.svelte";
 
-    export let connection: GnomeConnection | null;
     export let className: string;
 </script>
 
 <div
     class="flex flex-col text-slate-200 border-solid border-2 rounded-lg border-slate-200 {className}"
 >
-    <div class="text-md px-2 py-1">
-        {#if connection === null || connection?.getState() === State.NOT_CONNECTED}
+    <div class="text-md px-2 py-1 ml-auto">
+        {#if $connectionState === State.NOT_CONNECTED}
             <div class="text-red-500">NO CONNECTION</div>
-        {:else if connection?.getState() === State.CONNECTING}
+        {:else if $connectionState === State.CONNECTING}
             <div class="text-blue-400">CONNECTING</div>
-        {:else if connection?.getState() === State.CONNECTED}
-            <div class="text-lime-500">CONNECTED</div>
-        {:else if connection?.getState() === State.DISCONNECTED}
+        {:else if $connectionState === State.CONNECTED}
+            <div class="flex items-center gap-x-2">
+                <div class="w-2 h-2 rounded-lg bg-lime-500 animate-pulse" />
+                <div class="text-lime-500">CONNECTED</div>
+            </div>
+        {:else if $connectionState === State.DISCONNECTED}
             <div class="text-red-700">DISCONNECTED</div>
-        {:else if connection?.getState() === State.ERROR}
+        {:else if $connectionState === State.ERROR}
             <div class="text-red-800">ERROR</div>
         {/if}
     </div>
