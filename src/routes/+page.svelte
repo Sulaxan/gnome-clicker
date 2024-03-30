@@ -2,10 +2,11 @@
     import { fetchAccessToken, setupDiscordSdk } from "$lib";
     import { handle, pushEvent } from "$lib/client_event_handler";
     import ActivityLog from "$lib/components/ActivityLog.svelte";
+    import PerkShop from "$lib/components/shop/PerkShop.svelte";
     import { GnomeConnection, State } from "$lib/connection";
     import type { ClientClickEvent, ServerBoundPayload } from "$lib/protocol/client";
     import { DEBUG_MESSAGE, SUCCESS_COLOR, SYSTEM_MESSAGE, TextBuilder } from "$lib/protocol/text";
-    import { gnomes, instanceId, connectionState, clientId } from "$lib/stores";
+    import { gnomes, instanceId, connectionState, clientId, perkShopModal } from "$lib/stores";
     import { debug, log } from "$lib/util/log";
     import { onDestroy } from "svelte";
 
@@ -114,6 +115,8 @@
     >
         GNOME!
     </button>
+
+    <PerkShop />
 
     <div class="w-full absolute bottom-0">
         <!-- activity log -->

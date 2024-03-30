@@ -9,5 +9,7 @@ export const lastHeartbeatTime: Writable<number> = writable(0);
 export const connectionState: Writable<State> = writable(State.NOT_CONNECTED);
 export const activityLog: Writable<TextComponent[][]> = writable([]);
 
+export const perkShopModal: Writable<boolean> = writable(false);
+
 export const gnomes: Writable<number> = writable(0);
 export const perks: Writable<Map<string, number>> = writable(new Map());
