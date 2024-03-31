@@ -44,8 +44,9 @@ export function addPerk(instance: GnomeInstance, group: PerkGroup, tier: number)
     instance.addPerk(group, tier);
 
     const updateEvent: UpdatePerksEvent = {
-        perks: instance.getPerks(),
+        perks: Array.from(instance.getPerks().entries()),
     };
+
     instance.broadcast({
         eventType: "update-perks",
         payloadJson: JSON.stringify(updateEvent),
@@ -61,7 +62,7 @@ export function removePerk(instance: GnomeInstance, group: PerkGroup) {
     instance.removePerk(group);
 
     const updateEvent: UpdatePerksEvent = {
-        perks: instance.getPerks(),
+        perks: Array.from(instance.getPerks().entries()),
     };
     instance.broadcast({
         eventType: "update-perks",

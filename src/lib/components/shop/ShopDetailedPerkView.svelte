@@ -43,15 +43,7 @@
                 <Text components={perk.costMessage} className="text-sm" />
             {/if}
         </div>
-
-        <button
-            class="text-md text-lime-600 px-3 py-1 mt-5 uppercase border rounded-lg border-lime-600"
-        >
-            Purchase
-        </button>
     {:else}
         <div class="text-sm text-red-600">An error occurred</div>
     {/if}
-
-    <!-- TODO: Add purchase button -->
 </div>

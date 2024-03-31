@@ -40,15 +40,21 @@ export interface UpdateGnomesEvent extends ServerEvent {
 }
 
 export interface UpdatePerksEvent extends ServerEvent {
+    // maps aren't supported by JSON.stringify; use an array of tuples instead
     // perk group id => zero-based tier
-    perks: Map<string, number>;
+    perks: [groupId: string, tier: number][];
 }
 
 export interface SendMessageEvent extends ServerEvent {
     message: TextComponent[];
 }
 
-export type ClientBoundEventType = "initial-state" | "heartbeat" | "update-gnomes" | "update-perks" | "send-message";
+export type ClientBoundEventType =
+    | "initial-state"
+    | "heartbeat"
+    | "update-gnomes"
+    | "update-perks"
+    | "send-message";
 
 export interface ClientBoundPayload {
     eventType: ClientBoundEventType;

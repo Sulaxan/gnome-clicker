@@ -38,7 +38,11 @@ export async function GET(event: RequestEvent) {
             const user = new User(clientId);
             user.payloadHandler = (payload) => {
                 console.log(`Enqueueing payload for user ${clientId} in instance ${instanceId}...`);
-                controller.enqueue(encode(null, JSON.stringify(payload)));
+                try {
+                    controller.enqueue(encode(null, JSON.stringify(payload)));
+                } catch (e) {
+                    console.log("Error while enqueueing payload (disconnected?)");
+                }
             };
 
             INSTANCE_MANAGER.addUser(instanceId, user);
@@ -155,9 +159,12 @@ function handleAttemptPerkPurchase(
     broadcastMessage(
         instance,
         TextBuilder.from(PERK_MESSAGE)
-            .text(`[${group.name}]`)
+            .text("[")
             .color("#ffffff")
-            .text(`Purchased ${perk.name} [Tier ${nextTier + 1}]`)
+            .append(group.name)
+            .text("]")
+            .color("#ffffff")
+            .text(`Purchased [Tier ${nextTier + 1}]`)
             .build()
     );
 

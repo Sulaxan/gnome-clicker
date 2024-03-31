@@ -20,15 +20,15 @@
                     .color(SUCCESS_COLOR)
                     .build()
             );
-            $instanceId = sdk.instanceId;
+            instanceId.set(sdk.instanceId);
 
             if (sdk.clientId === null) {
                 return;
             }
-            $clientId = sdk.clientId;
+            clientId.set(sdk.clientId);
 
             // setup gnome server connection
-            gnomeConnection = new GnomeConnection($instanceId, $clientId, handle);
+            gnomeConnection = new GnomeConnection(instanceId.get()!, clientId.get()!, handle);
             gnomeConnection.connect();
             gnomeConnection.startMonitoring();
             gnomeConnection.onStateChange = (state) => {
@@ -61,7 +61,6 @@
                     }
                 }
             };
-
             fetchAccessToken(sdk);
         })
         .catch((reason) => {
@@ -84,14 +83,14 @@
     });
 
     async function sendGnomeClickEvent() {
-        if ($instanceId === undefined || $clientId === undefined) {
+        if (instanceId.get() === undefined || clientId.get() === undefined) {
             return;
         }
 
         const clickEvent: ClientClickEvent = {};
         const payload: ServerBoundPayload = {
-            instanceId: $instanceId,
-            clientId: $clientId,
+            instanceId: instanceId.get()!,
+            clientId: clientId.get()!,
             eventType: "click",
             payloadJson: JSON.stringify(clickEvent),
         };

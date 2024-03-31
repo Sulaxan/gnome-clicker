@@ -19,7 +19,7 @@
             <Dialog.Title class="text-2xl font-bold">Perk Shop</Dialog.Title>
             <Dialog.Description>View and purchase perks.</Dialog.Description>
         </Dialog.Header>
-        <div class="">
+        <div class="overflow-y-auto max-h-[75%] border border-primary rounded-lg p-3">
             {#if $currentPerkShowcase === undefined}
                 <ShopOverview perkShowcase={currentPerkShowcase} />
             {:else}

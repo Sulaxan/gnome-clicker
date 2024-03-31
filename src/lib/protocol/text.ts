@@ -18,10 +18,21 @@ export class TextBuilder {
     }
 
     /**
+     * Appends components to this builder's components.
+     *
+     * @param components The components to append
+     * @returns this
+     */
+    public append(components: TextComponent[]): TextBuilder {
+        components.forEach(component => this.components.push(component));
+        return this;
+    }
+
+    /**
      * Add text to the builder.
      *
      * @param content The text to add.
-     * @returns this.
+     * @returns this
      */
     public text(content: string): TextBuilder {
         this.components.push({
