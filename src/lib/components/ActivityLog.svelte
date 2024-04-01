@@ -3,13 +3,9 @@
     import { activityLog, connectionState } from "$lib/stores";
     import { onMount } from "svelte";
     import Text from "./Text.svelte";
+    import SmartScrollable from "./util/SmartScrollable.svelte";
 
     export let className: string;
-    let autoScrollIntervalId: number | undefined = undefined;
-
-    onMount(() => {
-        // autoScrollIntervalId = setInterval(() => {}, 1000);
-    });
 </script>
 
 <div
@@ -33,9 +29,9 @@
     </div>
     <div class="w-full h-1 bg-slate-200 z-20" />
 
-    <div class="overflow-y-auto scroll-smooth">
+    <SmartScrollable>
         {#each $activityLog as log}
             <Text components={log} className="text-lg mx-3 my-1" />
         {/each}
-    </div>
+    </SmartScrollable>
 </div>
