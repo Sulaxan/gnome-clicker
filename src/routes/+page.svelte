@@ -103,8 +103,12 @@
     }
 </script>
 
-<div class="flex flex-col gap-y-5 items-center bg-gray-800 text-slate-200 h-screen">
-    <h1 class="text-8xl font-bold py-5 animate-pulse text-indigo-600">GNOME CLICKER</h1>
+<div class="flex flex-col gap-y-5 items-center text-slate-200 h-screen">
+    <h1
+        class="text-2xl font-bold px-3 py-3 animate-pulse text-indigo-600 w-full text-center lg:text-left"
+    >
+        GNOME CLICKER
+    </h1>
     <p class="text-5xl font-bold text-yellow-400">{$gnomes} Gnomes</p>
 
     <button
@@ -117,8 +121,8 @@
 
     <PerkShop />
 
-    <div class="w-full absolute bottom-0">
+    <div class="w-full xl:absolute xl:bottom-0">
         <!-- activity log -->
-        <ActivityLog className="ml-auto mb-3 w-2/5 max-h-56" />
+        <ActivityLog className="mb-3 mx-3 lg:ml-auto lg:w-1/2 lg:2/5 max-h-56" />
     </div>
 </div>
