@@ -9,7 +9,7 @@
     export let perkShowcase: Writable<PerkShowcase | undefined>;
 </script>
 
-<div class="flex flex-col gap-y-3">
+<div class="flex flex-col gap-y-1">
     <!-- TODO: ghost out perks that have been purchased -->
     {#each PERK_GROUPS as group}
         {@const perkTier = $perks.get(group.id)}
@@ -42,9 +42,14 @@
                         >
                             More Info
                         </button>
+                        {#if perkTier !== undefined && perkTier >= index}
+                            <div class="class-sm uppercase font-bold text-lime-600">Purchased</div>
+                        {/if}
                     </div>
                 {/each}
             </div>
+
+            <div class="h-[1px] w-full bg-primary my-5" />
         </div>
     {/each}
 </div>

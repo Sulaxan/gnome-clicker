@@ -7,7 +7,7 @@ export function gnomeCostMessage(requiredGnomes: number): TextComponent[] {
         .text(requiredGnomes.toString())
         .space()
         .text("Gnomes")
-        .color("#0284c7")
+        .color("#fbbf24")
         .build();
 }
 

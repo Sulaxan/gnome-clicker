@@ -10,13 +10,6 @@
 </script>
 
 <div>
-    <button
-        class="border rounded-lg border-primary px-3 py-1 mb-5"
-        on:click={() => ($perkShowcase = undefined)}
-    >
-        Go Back
-    </button>
-
     {#if $perkShowcase !== undefined && perk !== undefined}
         <div class="flex gap-x-1">
             <Text components={$perkShowcase.group.name} defaultColor="#65a30d" />
@@ -46,4 +39,13 @@
     {:else}
         <div class="text-sm text-red-600">An error occurred</div>
     {/if}
+
+    <div class="flex justify-center">
+        <button
+            class="border rounded-lg border-primary px-3 py-1 my-5 w-1/4"
+            on:click={() => ($perkShowcase = undefined)}
+        >
+            Go Back
+        </button>
+    </div>
 </div>
