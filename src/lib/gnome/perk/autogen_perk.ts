@@ -22,6 +22,7 @@ export const AUTO_GEN_PERK_GROUP: PerkGroup = {
         {
             description: TextBuilder.of("Gnomes/sec: 1").build(),
             costMessage: gnomeCostMessage(TIER_1_COST),
+            imageUrl: "/perk/autogen/autogen_1.png",
             autoGenIncrement: 1,
             canPurchase(instance) {
                 return checkRequiredGnomes(instance, TIER_1_COST);
@@ -33,6 +34,7 @@ export const AUTO_GEN_PERK_GROUP: PerkGroup = {
         {
             description: TextBuilder.of("Gnomes/sec: 3").build(),
             costMessage: gnomeCostMessage(TIER_2_COST),
+            imageUrl: "/perk/autogen/autogen_2.png",
             autoGenIncrement: 3,
             canPurchase(instance) {
                 return checkRequiredGnomes(instance, TIER_2_COST);
@@ -44,6 +46,7 @@ export const AUTO_GEN_PERK_GROUP: PerkGroup = {
         {
             description: TextBuilder.of("Gnomes/sec: 5").build(),
             costMessage: gnomeCostMessage(TIER_3_COST),
+            imageUrl: "/perk/autogen/autogen_3.png",
             autoGenIncrement: 5,
             canPurchase(instance) {
                 return checkRequiredGnomes(instance, TIER_3_COST);

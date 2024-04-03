@@ -32,9 +32,15 @@
             <PurchaseButton {group} />
 
             <div class="flex overflow-x-auto gap-x-5 mt-3">
-                {#each group.perks as _perk, index}
+                {#each group.perks as perk, index}
                     <div class="flex flex-col items-center">
-                        <div class="w-32 h-32 bg-gray-600"></div>
+                        {#if perk.imageUrl !== undefined}
+                            <img class="w-32 h-32" src={perk.imageUrl} alt="Perk" />
+                        {:else if group.imageUrl !== undefined}
+                            <img class="w-32 h-32" src={group.imageUrl} alt="Perk" />
+                        {:else}
+                            <div class="w-32 h-32 bg-gray-600"></div>
+                        {/if}
                         <div>Tier {index + 1}</div>
                         <button
                             class="gc-border px-3 py-1"

@@ -116,8 +116,8 @@
 
     <button
         on:click={sendGnomeClickEvent}
-        class="text-6xl bg-indigo-500 w-64 h-64 rounded-[200px] border-solid border-2 border-b-[6px]
-        border-r-[6px] border-black hover:bg-indigo-600"
+        class="text-6xl bg-indigo-500 w-fit aspect-square rounded-[50%] border-2 border-primary
+        hover:bg-indigo-600"
     >
         GNOME!
     </button>

@@ -22,8 +22,9 @@ export const BIG_GNOME_PERK_GROUP: PerkGroup = {
     perks: [
         {
             description: TextBuilder.of("Gnomes/click: 2").build(),
-            gnomesPerClick: 2,
             costMessage: gnomeCostMessage(TIER_1_COST),
+            imageUrl: "/perk/big_gnome/big_gnome_1.png",
+            gnomesPerClick: 2,
             canPurchase(instance) {
                 return checkRequiredGnomes(instance, TIER_1_COST);
             },
@@ -33,8 +34,9 @@ export const BIG_GNOME_PERK_GROUP: PerkGroup = {
         },
         {
             description: TextBuilder.of("Gnomes/click: 3").build(),
-            gnomesPerClick: 3,
             costMessage: gnomeCostMessage(TIER_2_COST),
+            imageUrl: "/perk/big_gnome/big_gnome_2.png",
+            gnomesPerClick: 3,
             canPurchase(instance) {
                 return checkRequiredGnomes(instance, TIER_2_COST);
             },
@@ -44,8 +46,9 @@ export const BIG_GNOME_PERK_GROUP: PerkGroup = {
         },
         {
             description: TextBuilder.of("Gnomes/click: 4").build(),
-            gnomesPerClick: 4,
             costMessage: gnomeCostMessage(TIER_3_COST),
+            imageUrl: "/perk/big_gnome/big_gnome_3.png",
+            gnomesPerClick: 4,
             canPurchase(instance) {
                 return checkRequiredGnomes(instance, TIER_3_COST);
             },
@@ -55,8 +58,9 @@ export const BIG_GNOME_PERK_GROUP: PerkGroup = {
         },
         {
             description: TextBuilder.of("Gnomes/click: 5").build(),
-            gnomesPerClick: 5,
             costMessage: gnomeCostMessage(TIER_4_COST),
+            imageUrl: "/perk/big_gnome/big_gnome_4.png",
+            gnomesPerClick: 5,
             canPurchase(instance) {
                 return checkRequiredGnomes(instance, TIER_4_COST);
             },
