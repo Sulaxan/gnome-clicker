@@ -53,4 +53,13 @@ export const AUTO_GEN_PERK_GROUP: PerkGroup = {
             },
         },
     ] as AutoGenPerk[],
+
+    activate(instance, tier) {
+        if (tier >= this.perks.length) {
+            return;
+        }
+
+        const gnomes = (this.perks[tier] as AutoGenPerk).autoGenIncrement;
+        instance.setGnomes(instance.getGnomes() + gnomes);
+    },
 };

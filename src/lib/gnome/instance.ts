@@ -1,5 +1,5 @@
 import type { ClientBoundPayload, HeartBeatEvent } from "$lib/protocol/server";
-import type { PerkGroup } from "./perk";
+import { AUTO_GEN_PERK_GROUP, BIG_GNOME_PERK_GROUP, type PerkGroup } from "./perk";
 import type { User } from "./user";
 
 export class GnomeInstance {
@@ -44,7 +44,13 @@ export class GnomeInstance {
      * Increments gnomes, implicitly applying any modifiers.
      */
     public incrementGnomes() {
-        this.gnomes += 1;
+        const bigGnomeTier = this.perks.get(BIG_GNOME_PERK_GROUP.id);
+        if (bigGnomeTier !== undefined) {
+            BIG_GNOME_PERK_GROUP.activate(this, bigGnomeTier);
+        } else {
+            // only increment by 1 if the instance does not have the big gnome perk
+            this.gnomes += 1;
+        }
     }
 
     public getPerks(): Map<string, number> {
@@ -90,6 +96,12 @@ export class GnomeInstance {
             }
 
             // normal logic
+
+            // auto gen perk
+            const autoGenPerkTier = this.perks.get(AUTO_GEN_PERK_GROUP.id);
+            if (autoGenPerkTier !== undefined) {
+                AUTO_GEN_PERK_GROUP.activate(this, autoGenPerkTier);
+            }
         }, 1000);
     }
 

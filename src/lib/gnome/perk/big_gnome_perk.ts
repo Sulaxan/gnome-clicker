@@ -65,4 +65,13 @@ export const BIG_GNOME_PERK_GROUP: PerkGroup = {
             },
         },
     ] as BigGnomePerk[],
+
+    activate(instance, tier) {
+        if (tier >= this.perks.length) {
+            return;
+        }
+
+        const gnomes = (this.perks[tier] as BigGnomePerk).gnomesPerClick;
+        instance.setGnomes(instance.getGnomes() + gnomes);
+    },
 };

@@ -59,4 +59,13 @@ export interface PerkGroup {
     description: TextComponent[];
     imageUrl?: string;
     perks: Perk[];
+    /**
+     * A function to active a perk's actions. This function can assume the instance is allowed to
+     * use the perk. This function should not need to worry about sending data to the client
+     * (specifically gnomes), unless necessary.
+     *
+     * @param instance The instance to invoke the perk on.
+     * @param tier The zero-based tier of the perk.
+     */
+    activate: (instance: GnomeInstance, tier: number) => void;
 }
