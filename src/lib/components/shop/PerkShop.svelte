@@ -10,7 +10,7 @@
 
 <Dialog.Root>
     <Dialog.Trigger
-        class="border border-primary px-3 py-1 rounded-lg hover:border-indigo-300 hover:text-indigo-300"
+        class="gc-border px-3 py-1 hover:border-indigo-300 hover:text-indigo-300"
     >
         Open Perk Shop
     </Dialog.Trigger>
@@ -20,7 +20,7 @@
             <Dialog.Description>View and purchase perks.</Dialog.Description>
         </Dialog.Header>
 
-        <div class="overflow-y-auto max-h-full border border-primary rounded-lg p-3">
+        <div class="overflow-y-auto max-h-full gc-border rounded-lg p-3">
             {#if $currentPerkShowcase === undefined}
                 <ShopOverview perkShowcase={currentPerkShowcase} />
             {:else}

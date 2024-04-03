@@ -9,7 +9,7 @@
 
 {#if $perks.get(group.id) === undefined || $perks.get(group.id) !== group.perks.length}
     <button
-        class="text-sm text-lime-600 px-3 py-1 mt-5 uppercase border rounded-lg border-lime-600"
+        class="text-md text-lime-600 px-3 py-1 mt-5 uppercase gc-border border-lime-600"
         on:click={() => attemptPerkPurchase(group)}
     >
         Purchase Next Tier

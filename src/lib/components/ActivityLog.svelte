@@ -1,7 +1,6 @@
 <script lang="ts">
     import { State } from "$lib/connection";
     import { activityLog, connectionState } from "$lib/stores";
-    import { onMount } from "svelte";
     import Text from "./Text.svelte";
     import SmartScrollable from "./util/SmartScrollable.svelte";
 
@@ -9,7 +8,7 @@
 </script>
 
 <div
-    class="flex flex-col text-slate-200 border-solid border-2 rounded-lg border-slate-200 {className}"
+    class="flex flex-col text-slate-200 gc-border border-primary {className}"
 >
     <div class="text-md px-2 py-1 ml-auto z-20">
         {#if $connectionState === State.NOT_CONNECTED}

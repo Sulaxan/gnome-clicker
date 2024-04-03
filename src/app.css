@@ -2,6 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: "Silkscreen";
+    src: url("/Silkscreen-Regular.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Silkscreen";
+    src: url("/Silkscreen-Bold.ttf");
+    font-weight: bold;
+    font-style: normal;
+}
+
+* {
+    font-family: "Silkscreen";
+}
+
 /* only need to account for chrome since Discord uses chromium */
 /* from: https://stackoverflow.com/questions/66166047/how-to-make-thin-scrollbar-in-chrome */
 ::-webkit-scrollbar {
@@ -90,5 +108,11 @@
     }
     body {
         @apply bg-background text-foreground;
+    }
+}
+
+@layer components {
+    .gc-border {
+        @apply border border-b-2 border-r-2 border-primary rounded-lg;
     }
 }

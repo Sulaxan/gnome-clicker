@@ -12,13 +12,13 @@
 <div>
     {#if $perkShowcase !== undefined && perk !== undefined}
         <div class="flex gap-x-1">
-            <Text components={$perkShowcase.group.name} defaultColor="#65a30d" />
-            <div class="text-md text-muted-foreground">(Tier {$perkShowcase.tier + 1})</div>
+            <Text components={$perkShowcase.group.name} defaultColor="#65a30d" className="text-lg" />
+            <div class="text-lg text-muted-foreground">(Tier {$perkShowcase.tier + 1})</div>
         </div>
         <Text
             components={$perkShowcase.group.description}
             defaultColor="hsl(var(--muted-foreground))"
-            className="text-sm"
+            className="text-lg"
         />
 
         <div class="mt-5">
@@ -26,14 +26,14 @@
                 <Text components={perk.name} className="text-md" />
             {/if}
             {#if perk.description !== undefined}
-                <Text components={perk.description} className="text-sm" />
+                <Text components={perk.description} className="text-lg" />
             {/if}
         </div>
 
         <div class="mt-5">
             {#if perk.costMessage !== undefined}
-                <div class="text-sm font-bold">Cost:</div>
-                <Text components={perk.costMessage} className="text-sm" />
+                <div class="text-lg font-bold">Cost:</div>
+                <Text components={perk.costMessage} className="text-lg" />
             {/if}
         </div>
     {:else}
@@ -42,7 +42,7 @@
 
     <div class="flex justify-center">
         <button
-            class="border rounded-lg border-primary px-3 py-1 my-5 w-1/4"
+            class="border rounded-lg border-primary px-3 py-1 my-5 w-1/4 text-lg"
             on:click={() => ($perkShowcase = undefined)}
         >
             Go Back

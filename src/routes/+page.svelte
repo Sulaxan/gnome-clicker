@@ -109,7 +109,10 @@
     >
         GNOME CLICKER
     </h1>
-    <p class="text-5xl font-bold text-yellow-400">{$gnomes} Gnomes</p>
+    <div class="flex flex-col items-center">
+        <div class="text-5xl font-bold text-yellow-400">{$gnomes} Gnomes</div>
+        <div class="text-md text-slate-200">Get as high a score as you can!</div>
+    </div>
 
     <button
         on:click={sendGnomeClickEvent}

@@ -14,13 +14,13 @@
     {#each PERK_GROUPS as group}
         {@const perkTier = $perks.get(group.id)}
         <div>
-            <Text components={group.name} defaultColor="#65a30d" className="text-md" />
+            <Text components={group.name} defaultColor="#65a30d" className="text-lg" />
             <Text
                 components={group.description}
                 defaultColor="hsl(var(--muted-foreground))"
-                className="text-sm"
+                className="text-lg"
             />
-            <div class="text-sm text-muted-foreground">
+            <div class="text-md text-muted-foreground mt-2">
                 Current Tier:
                 {#if perkTier !== undefined}
                     {perkTier + 1}
@@ -37,13 +37,13 @@
                         <div class="w-32 h-32 bg-gray-600"></div>
                         <div>Tier {index + 1}</div>
                         <button
-                            class="border rounded-lg border-primary px-3 py-1"
+                            class="gc-border px-3 py-1"
                             on:click={() => ($perkShowcase = { group: group, tier: index })}
                         >
                             More Info
                         </button>
                         {#if perkTier !== undefined && perkTier >= index}
-                            <div class="class-sm uppercase font-bold text-lime-600">Purchased</div>
+                            <div class="text-md uppercase font-bold text-lime-600">Purchased</div>
                         {/if}
                     </div>
                 {/each}
