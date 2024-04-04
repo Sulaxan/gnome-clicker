@@ -2,6 +2,9 @@
     import { fetchAccessToken, setupDiscordSdk } from "$lib";
     import { handle, pushEvent } from "$lib/client_event_handler";
     import ActivityLog from "$lib/components/ActivityLog.svelte";
+    import Clicker from "$lib/components/Clicker.svelte";
+    import GnomesDisplay from "$lib/components/GnomesDisplay.svelte";
+    import Header from "$lib/components/Header.svelte";
     import PerkShop from "$lib/components/shop/PerkShop.svelte";
     import { GnomeConnection, State } from "$lib/connection";
     import type { ClientClickEvent, ServerBoundPayload } from "$lib/protocol/client";
@@ -104,23 +107,14 @@
 </script>
 
 <div class="flex flex-col gap-y-5 items-center text-slate-200 h-screen">
-    <h1
-        class="text-2xl font-bold px-3 py-3 animate-pulse text-indigo-600 w-full text-center lg:text-left"
-    >
-        GNOME CLICKER
-    </h1>
+    <Header />
+
     <div class="flex flex-col items-center">
-        <div class="text-5xl font-bold text-yellow-400">{$gnomes} Gnomes</div>
+        <GnomesDisplay gnomes={$gnomes} />
         <div class="text-md text-slate-200">Get as high a score as you can!</div>
     </div>
 
-    <button
-        on:click={sendGnomeClickEvent}
-        class="text-6xl bg-indigo-500 w-fit aspect-square rounded-[50%] border-2 border-primary
-        hover:bg-indigo-600"
-    >
-        GNOME!
-    </button>
+    <Clicker on:click={sendGnomeClickEvent} />
 
     <PerkShop />
 
