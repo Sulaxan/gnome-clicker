@@ -115,4 +115,15 @@
     .gc-border {
         @apply border border-b-2 border-r-2 border-primary rounded-lg;
     }
+
+    /* custom CSS class as opposed to extending tailwind's animate since we want to include extra
+     * CSS classes
+     */
+    .animate-gradient {
+        @apply bg-gradient-to-r bg-[length:400%_400%] from-orange-400 via-yellow-600 to-yellow-400 animate-[gradient_5s_ease_infinite];
+    }
+
+    .animate-gradient-text {
+        @apply bg-gradient-to-r bg-[length:400%_400%] from-orange-400 via-yellow-600 to-yellow-400 text-transparent bg-clip-text animate-[gradient_5s_ease_infinite];
+    }
 }

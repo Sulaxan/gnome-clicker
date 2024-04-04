@@ -34,6 +34,16 @@ export function removeGnomes(instance: GnomeInstance, gnomes: number) {
     });
 }
 
+export function sendUpdatedGnomes(instance: GnomeInstance) {
+    const updateEvent: UpdateGnomesEvent = {
+        gnomes: instance.getGnomes(),
+    };
+    instance.broadcast({
+        eventType: "update-gnomes",
+        payloadJson: JSON.stringify(updateEvent),
+    });
+}
+
 /**
  * Adds a perk to an instance.
  *

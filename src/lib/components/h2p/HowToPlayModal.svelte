@@ -1,7 +1,7 @@
 <script lang="ts">
     import * as Dialog from "$lib/components/ui/dialog";
     import { Icon } from "@steeze-ui/svelte-icon";
-    import { ArrowDown, ChevronDoubleRight } from "@steeze-ui/heroicons";
+    import { ArrowDown } from "@steeze-ui/heroicons";
     import Clicker from "../Clicker.svelte";
     import Card from "./Card.svelte";
     import GnomesDisplay from "../GnomesDisplay.svelte";
@@ -19,16 +19,16 @@
 
         <div class="flex flex-col lg:flex-row items-center gap-x-3 gap-y-5">
             <Card step={1} description="Click on clicker to generate Gnomes">
-                <Clicker className="text-3xl my-3" />
+                <Clicker className="text-4xl my-3" />
             </Card>
-            <Icon src={ChevronDoubleRight} theme="solid" class="w-6 h-6 hidden lg:inline-flex" />
+            <span class="text-4xl">&gt;</span>
             <Card step={2} description="Spend Gnomes in the Perk Shop">
                 <div class="flex flex-col items-center mt-3">
-                    <Icon src={ArrowDown} theme="solid" class="animate-bounce w-12 h-12" />
+                    <Icon src={ArrowDown} theme="solid" class="animate-bounce w-10 h-10" />
                     <div class="gc-border text-md px-3 py-1">Open Perk Shop</div>
                 </div>
             </Card>
-            <Icon src={ChevronDoubleRight} theme="solid" class="w-6 h-6 hidden lg:inline-flex" />
+            <span class="text-4xl">&gt;</span>
             <Card step={3} description="Get as many Gnomes as you can!">
                 <GnomesDisplay gnomes={100000} className="text-xl text-center mt-3" />
                 <div class="text-lg text-center uppercase text-orange-500">High Score!</div>

@@ -1,4 +1,5 @@
 import type { ClientBoundPayload, HeartBeatEvent } from "$lib/protocol/server";
+import { sendUpdatedGnomes } from "./helper";
 import { AUTO_GEN_PERK_GROUP, BIG_GNOME_PERK_GROUP, type PerkGroup } from "./perk";
 import type { User } from "./user";
 
@@ -102,6 +103,9 @@ export class GnomeInstance {
             if (autoGenPerkTier !== undefined) {
                 AUTO_GEN_PERK_GROUP.activate(this, autoGenPerkTier);
             }
+
+            // send updated gnomes
+            sendUpdatedGnomes(this);
         }, 1000);
     }
 

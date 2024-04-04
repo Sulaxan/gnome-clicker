@@ -114,7 +114,7 @@
         <div class="text-md text-slate-200">Get as high a score as you can!</div>
     </div>
 
-    <Clicker on:click={sendGnomeClickEvent} />
+    <Clicker clickFunc={sendGnomeClickEvent} />
 
     <PerkShop />
 
