@@ -10,7 +10,9 @@ only what was necessary. See [Features](#features) for more information about wh
 
 See [Disclaimers](#disclaimers) for important information about the project.
 
-**Why Gnome Clicker?**
+Since you might be curious:
+
+**Why Gnome Clicker?**<br>
 idk it seemed kinda funny
 
 ### Architecture
@@ -38,7 +40,7 @@ The ideal approach here would be to use websockets, however, I decided against i
     solutions, or just port forward).
 -   Complexity of adding a websocket server to run with SvelteKit (+ introducing another library).
     It would be my first time using websockets with SvelteKit so there's quite a few unknown variables.
--   This is a low scope project; best to avoid unnecessary complexities
+-   This is a low scope project; best to avoid unnecessary complexities.
 
 #### Protocol
 
@@ -72,7 +74,7 @@ Gnome Clicker includes the following features:
 
 -   A Perk Shop to buy various perks
     -   `Auto Gen` perk to auto generate Gnomes
-    -   `Big Gnome` perk to get more gnomes per click
+    -   `Big Gnome` perk to get more Gnomes per click
 -   An Activity Log, containing game related, system, etc. messages
 -   A menu for how to play Gnome Clicker
 -   ... and of course, a button to click to generate Gnomes
