@@ -86,7 +86,7 @@ The project in its current state is, for the most part, finished. Some important
 -   Not production ready. Though the game does work, it hasn't been tested with bigger workloads.
     It's also probably better to swap to using websockets in a production environment.
 
-## Appendix
+### Appendix
 
 [1] https://discord.com/build/embedded-app-sdk
 
