@@ -4,14 +4,15 @@
 
 @font-face {
     font-family: "Silkscreen";
-    src: url("/Silkscreen-Regular.ttf");
+    /* url pointing to our server to download the font */
+    src: url("/font/Silkscreen-Regular.ttf");
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Silkscreen";
-    src: url("/Silkscreen-Bold.ttf");
+    src: url("/font/Silkscreen-Bold.ttf");
     font-weight: bold;
     font-style: normal;
 }
