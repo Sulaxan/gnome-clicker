@@ -2,6 +2,8 @@
 
 Gnome Clicker (like Cookie Clicker) Discord Activity.
 
+[<img src="docs/preview.png">]()
+
 ## Prelude
 
 This project serves as a test of the Discord Embedded App SDK for creating Discord
