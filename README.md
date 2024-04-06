@@ -17,18 +17,18 @@ Since you might be curious:
 **Why Gnome Clicker?**<br>
 idk it seemed kinda funny
 
-### Architecture
+## Architecture
 
 This project is written purely in TypeScript using SvelteKit. Specific implementation details are
 below.
 
-#### SPA over SSR
+### SPA over SSR
 
 SvelteKit, by default, renders using Server-Side Rendering (SSR), however, Discord requires
 Activites to be Single Page Apps (SPAs), and for SvelteKit to render in such a way, SSR needs to be
 disabled.
 
-#### Server-Client Architecture
+### Server-Client Architecture
 
 The client sends a GET request to an endpoint to initiate the Server-Sent Events (SSE)
 stream<sup>[4]</sup><sup>[5]</sup>. The server uses this stream to send custom (protocol)[#protocol]
@@ -44,7 +44,7 @@ The ideal approach here would be to use websockets, however, I decided against i
     It would be my first time using websockets with SvelteKit so there's quite a few unknown variables.
 -   This is a low scope project; best to avoid unnecessary complexities.
 
-#### Protocol
+### Protocol
 
 The protocol is fairly simple: "events" are serialized into JSON with some extra identifying header
 information.
@@ -70,7 +70,7 @@ Similarly, the server message header includes the following:
 For full information related to the events, see the client/server protocol code (the code is quite
 straightforward).
 
-### Features
+## Features
 
 Gnome Clicker includes the following features:
 
@@ -81,7 +81,7 @@ Gnome Clicker includes the following features:
 -   A menu for how to play Gnome Clicker
 -   ... and of course, a button to click to generate Gnomes
 
-### Disclaimers
+## Disclaimers
 
 The project in its current state is, for the most part, finished. Some important things to note:
 
@@ -90,7 +90,7 @@ The project in its current state is, for the most part, finished. Some important
 -   Not production ready. Though the game does work, it hasn't been tested with bigger workloads.
     It's also probably better to swap to using websockets in a production environment.
 
-### Appendix
+## Appendix
 
 [1] https://discord.com/build/embedded-app-sdk
 
