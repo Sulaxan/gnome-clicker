@@ -104,6 +104,11 @@ The project in its current state is, for the most part, finished. Some important
 
 ## Developing
 
+A Discord Activity is essentially a website, so the development process is very similar to that of a
+regular website. It is important to note that though you _can_ develop activites using your browser,
+Discord related functionality will not work, and thus you should only use the browser to work on the
+UI itself and less so implementing features.
+
 Install dependencies with `npm install` (or `pnpm install` or `yarn`), then start a development
 server:
 
@@ -111,8 +116,22 @@ server:
 npm run dev
 
 # or start the server and open the app in a new browser tab
+# (should only be used for working on the UI)
 npm run dev -- --open
 ```
+
+### Developing and Preview on Discord
+
+-   Obtain an external URL that points to the localhost URL provided by `npm run dev` (either port
+    forward, or use a tool like `cloudflared`).
+-   Follow the steps found on [Building Your First Activty in Discord](https://discord.com/developers/docs/activities/building-an-activity)
+    to create a new app on Discord.
+-   Within your app's details on the Discord Developer Portal, you can map `/` to your external
+    URL in the `URL Mappings` section.
+-   Once that's done, you can follow the instructions in the Activity docs linked above to start
+    your activity. Essentially, once you enable Developer Mode within Discord itself, you can join a
+    voice channel, open up the Activities menu, and start your activity (but do follow the docs
+    linked above in case anything changes).
 
 ## Building
 
@@ -122,4 +141,4 @@ To create a production version of the app:
 npm run build
 ```
 
-You can preview the production build with `npm run preview`.
+You can preview the production build with `npm run preview` (only to view the UI).
