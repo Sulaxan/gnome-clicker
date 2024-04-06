@@ -1,6 +1,6 @@
 <script lang="ts">
     import { PERK_GROUPS } from "$lib/gnome/perk";
-    import type { Writable, get } from "svelte/store";
+    import type { Writable } from "svelte/store";
     import type { PerkShowcase } from ".";
     import Text from "../Text.svelte";
     import { perks } from "$lib/stores";
@@ -29,11 +29,13 @@
                 {/if}
             </div>
 
-            <PurchaseButton {group} />
+            <div class="flex justify-center sm:justify-start">
+                <PurchaseButton {group} />
+            </div>
 
-            <div class="flex overflow-x-auto gap-x-5 mt-3">
+            <div class="flex overflow-x-auto gap-x-5 mt-3 w-full pb-3">
                 {#each group.perks as perk, index}
-                    <div class="flex flex-col items-center">
+                    <div class="flex flex-col items-center min-w-32">
                         {#if perk.imageUrl !== undefined}
                             <img class="w-32 h-32" src={perk.imageUrl} alt="Perk" />
                         {:else if group.imageUrl !== undefined}
@@ -55,7 +57,7 @@
                 {/each}
             </div>
 
-            <div class="h-[1px] w-full bg-primary my-5" />
+            <div class="h-[1px] w-full bg-primary my-3" />
         </div>
     {/each}
 </div>
